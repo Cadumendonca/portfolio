@@ -5,9 +5,11 @@ if (!reduced && window.gsap && window.ScrollTrigger) {
 
   const revealGroups = [
     ['.skills article', 0.1],
+    ['.services .commercial-head > *, .service-grid article', 0.08],
     ['.about .section-label, .about-main > *, .stats > div', 0.1],
     ['.projects .section-label, .projects-head > *, .project-card', 0.08],
     ['.process .section-label, .process > h2, .steps article', 0.1],
+    ['.diagnostic > *, .faq-title, .faq-list details', 0.08],
     ['.contact > p, .contact > h2, .contact > a, .contact footer', 0.12]
   ];
 
@@ -28,6 +30,26 @@ if (!reduced && window.gsap && window.ScrollTrigger) {
     });
   });
 }
+
+document.querySelectorAll('.faq details').forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    document.querySelectorAll('.faq details[open]').forEach((other) => {
+      if (other !== item) other.open = false;
+    });
+  });
+});
+
+document.querySelectorAll('.track-contact').forEach((link) => {
+  link.addEventListener('click', () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'contact_click',
+      contact_location: link.closest('section')?.id || link.dataset.service || 'navigation',
+      contact_label: link.textContent.trim()
+    });
+  });
+});
 
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener('click', (event) => {
