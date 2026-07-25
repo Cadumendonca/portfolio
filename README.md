@@ -42,36 +42,36 @@ Este repositório reúne meu portfólio e alguns dos projetos que fizeram parte 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <img src="assets/projects/rendera.png" alt="Página inicial do projeto Rendera"><br>
+      <img src="assets/projects/thumbs/rendera.webp" alt="Página inicial do projeto Rendera"><br>
       <strong>Rendera</strong><br>
       Arquitetura · Identidade · Website institucional
     </td>
     <td width="50%" valign="top">
-      <img src="assets/projects/trilhas-do-pampa.png" alt="Página inicial do projeto Trilhas do Pampa"><br>
+      <img src="assets/projects/thumbs/trilhas-do-pampa.webp" alt="Página inicial do projeto Trilhas do Pampa"><br>
       <strong>Trilhas do Pampa</strong><br>
       Turismo · Conteúdo · Experiência digital
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="assets/projects/vtr.png" alt="Página inicial do projeto VTR Representações"><br>
+      <img src="assets/projects/thumbs/vtr.webp" alt="Página inicial do projeto VTR Representações"><br>
       <strong>VTR Representações</strong><br>
       Catálogo · Negócios B2B · Presença digital
     </td>
     <td width="50%" valign="top">
-      <img src="assets/projects/casa-manso.png" alt="Página inicial do projeto Casa Manso"><br>
+      <img src="assets/projects/thumbs/casa-manso.webp" alt="Página inicial do projeto Casa Manso"><br>
       <strong>Casa Manso</strong><br>
       Advocacia · Marca · Website institucional
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="assets/projects/almeida-sato.png" alt="Página inicial do projeto Almeida Sato"><br>
+      <img src="assets/projects/thumbs/almeida-sato.webp" alt="Página inicial do projeto Almeida Sato"><br>
       <strong>Almeida Sato</strong><br>
       Direito empresarial · Estratégia · Interface
     </td>
     <td width="50%" valign="top">
-      <img src="assets/projects/ferro-defesa.png" alt="Página inicial do projeto Ferro Defesa"><br>
+      <img src="assets/projects/thumbs/ferro-defesa.webp" alt="Página inicial do projeto Ferro Defesa"><br>
       <strong>Ferro Defesa</strong><br>
       Advocacia criminal · Posicionamento · Website
     </td>
