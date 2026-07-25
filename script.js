@@ -18,6 +18,7 @@ if (!reduced && window.gsap && window.ScrollTrigger) {
       gsap.from(element, {
         y: 42,
         opacity: 0,
+        immediateRender: false,
         duration: 0.45,
         delay: Math.min(index * 0.015, 0.06),
         ease: 'power2.out',
