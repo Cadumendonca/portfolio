@@ -128,24 +128,77 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   });
 });
 
+// --- Filtro de Categoria dos Projetos ---
+const filterButtons = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+
+filterButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    filterButtons.forEach((b) => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-selected', 'true');
+
+    const filter = btn.dataset.filter;
+    projectCards.forEach((card) => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.classList.remove('is-hidden');
+      } else {
+        card.classList.add('is-hidden');
+      }
+    });
+  });
+});
+
+// --- Lightbox de Projetos com Navegação ---
 const projectLightbox = document.querySelector('.project-lightbox');
 const lightboxImage = projectLightbox?.querySelector('.lightbox-canvas img');
 const lightboxTitle = projectLightbox?.querySelector('#lightbox-title');
 const lightboxClose = projectLightbox?.querySelector('.lightbox-close');
+const lightboxPrev = projectLightbox?.querySelector('.lightbox-prev');
+const lightboxNext = projectLightbox?.querySelector('.lightbox-next');
+
+let activeProjectIndex = -1;
 let lastProjectTrigger = null;
+
+const getVisibleProjectTriggers = () => {
+  return [...document.querySelectorAll('.project-card:not(.is-hidden) .shot')];
+};
+
+const showProjectAtIndex = (index) => {
+  const visibleTriggers = getVisibleProjectTriggers();
+  if (visibleTriggers.length === 0) return;
+  
+  if (index < 0) index = visibleTriggers.length - 1;
+  if (index >= visibleTriggers.length) index = 0;
+  
+  activeProjectIndex = index;
+  const trigger = visibleTriggers[index];
+  
+  if (lightboxTitle && lightboxImage) {
+    lightboxTitle.textContent = trigger.dataset.project;
+    lightboxImage.src = trigger.dataset.full;
+    lightboxImage.alt = `Captura completa da página do projeto ${trigger.dataset.project}`;
+    projectLightbox.querySelector('.lightbox-canvas').scrollTop = 0;
+  }
+};
 
 document.querySelectorAll('.project-card .shot').forEach((trigger) => {
   trigger.addEventListener('click', () => {
     if (!projectLightbox || !lightboxImage || !lightboxTitle) return;
     const book = trigger.closest('.project-card');
     if (projectLightbox.open || book?.classList.contains('is-pulling')) return;
+    
     lastProjectTrigger = trigger;
+    const visibleTriggers = getVisibleProjectTriggers();
+    activeProjectIndex = visibleTriggers.indexOf(trigger);
+    
     book?.classList.add('is-pulling');
 
     const openProject = () => {
-      lightboxTitle.textContent = trigger.dataset.project;
-      lightboxImage.src = trigger.dataset.full;
-      lightboxImage.alt = `Captura completa da página do projeto ${trigger.dataset.project}`;
+      showProjectAtIndex(activeProjectIndex);
       document.body.classList.add('lightbox-open');
       if (typeof projectLightbox.showModal === 'function') {
         projectLightbox.showModal();
@@ -153,7 +206,6 @@ document.querySelectorAll('.project-card .shot').forEach((trigger) => {
         projectLightbox.setAttribute('open', '');
         projectLightbox.setAttribute('aria-modal', 'true');
       }
-      projectLightbox.querySelector('.lightbox-canvas').scrollTop = 0;
       book?.classList.remove('is-pulling');
     };
 
@@ -163,6 +215,20 @@ document.querySelectorAll('.project-card .shot').forEach((trigger) => {
       window.setTimeout(openProject, 260);
     }
   });
+});
+
+lightboxPrev?.addEventListener('click', () => showProjectAtIndex(activeProjectIndex - 1));
+lightboxNext?.addEventListener('click', () => showProjectAtIndex(activeProjectIndex + 1));
+
+document.addEventListener('keydown', (event) => {
+  if (!projectLightbox?.open) return;
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    showProjectAtIndex(activeProjectIndex - 1);
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    showProjectAtIndex(activeProjectIndex + 1);
+  }
 });
 
 const closeProjectLightbox = () => {
@@ -187,7 +253,6 @@ projectLightbox?.addEventListener('cancel', (event) => {
   closeProjectLightbox();
 });
 
-
 if (!reduced && window.gsap) {
   [
     { track: '.orbit-track-1', duration: 55, turn: 360 },
@@ -198,3 +263,4 @@ if (!reduced && window.gsap) {
     gsap.to(track + ' .code', { rotation: -turn, duration, repeat: -1, ease: 'none' });
   });
 }
+
