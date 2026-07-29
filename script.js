@@ -128,6 +128,64 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
   });
 });
 
+// --- Carrossel de Projetos ---
+const projectCarousel = document.querySelector('.project-carousel');
+const projectTrack = document.querySelector('.project-track');
+const projectGrid = document.querySelector('.project-grid');
+const carouselPrev = document.querySelector('.carousel-prev');
+const carouselNext = document.querySelector('.carousel-next');
+
+let carouselPage = 0;
+
+const getVisibleCards = () => {
+  return [...document.querySelectorAll('.project-card:not(.is-hidden)')];
+};
+
+const getCardsPerPage = () => {
+  if (window.innerWidth <= 600) return 3;
+  if (window.innerWidth <= 900) return 5;
+  return 9;
+};
+
+const getMaxPage = () => {
+  const visible = getVisibleCards();
+  const perPage = getCardsPerPage();
+  return Math.max(0, Math.ceil(visible.length / perPage) - 1);
+};
+
+const updateCarousel = (animate = true) => {
+  if (!projectGrid) return;
+  const visible = getVisibleCards();
+  const perPage = getCardsPerPage();
+  const maxPage = getMaxPage();
+
+  carouselPage = Math.max(0, Math.min(carouselPage, maxPage));
+
+  const cardWidth = visible.length > 0 ? visible[0].offsetWidth : 0;
+  const gap = parseFloat(getComputedStyle(projectGrid).columnGap) || 0;
+  const offset = carouselPage * perPage * (cardWidth + gap);
+
+  projectGrid.style.transform = `translateX(-${offset}px)`;
+
+  if (carouselPrev) carouselPrev.disabled = carouselPage === 0;
+  if (carouselNext) carouselNext.disabled = carouselPage >= maxPage;
+};
+
+carouselPrev?.addEventListener('click', () => {
+  carouselPage -= 1;
+  updateCarousel();
+});
+
+carouselNext?.addEventListener('click', () => {
+  carouselPage += 1;
+  updateCarousel();
+});
+
+window.addEventListener('resize', () => {
+  carouselPage = 0;
+  updateCarousel();
+});
+
 // --- Filtro de Categoria dos Projetos ---
 const filterButtons = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
@@ -149,8 +207,14 @@ filterButtons.forEach((btn) => {
         card.classList.add('is-hidden');
       }
     });
+
+    carouselPage = 0;
+    updateCarousel();
   });
 });
+
+// inicializar carrossel
+updateCarousel();
 
 // --- Lightbox de Projetos com Navegação ---
 const projectLightbox = document.querySelector('.project-lightbox');
